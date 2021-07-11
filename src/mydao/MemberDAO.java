@@ -11,7 +11,7 @@ import mydto.MemberDTO;
 
 public class MemberDAO {
 	
-	//조회
+	//조회하기
 	public boolean isCheckId(String id) {
 		//select
 		Connection conn=getConnection();
