@@ -30,7 +30,8 @@ public class MemberDAO {
 		ResultSet rs=null;
 		boolean result=false;
 		try {
-			pstmt=conn.prepareStatement(sb.toString());
+			//Connection prepareStatement method => create preparedStatement object
+			pstmt=conn.prepareStatement(sb.toString());//문자열로
 			pstmt.setString(1, id);		//?에 관한 자료들을 외부에서 받아서 사용
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
@@ -72,7 +73,7 @@ public class MemberDAO {
 		StringBuilder sb=new StringBuilder();
 		sb.append(" insert into Member2( mno, id, pwd, name, email, joindate ) ");
 		sb.append(" values	(	memberseq.nextval, ?, ?, ?, ?, sysdate  )   ");
-		//sequence 이용 => 자동으로 순서지정(번호 자동증가)
+		//sequence 이용 => 자동으로 순서지정(번호 자동증가) + sequence로 지정된 숫자는 db에서 수정할 수 없음 (java에서 출력할 때 수정)
 		int result=0;
 		
 		try {
@@ -129,6 +130,11 @@ public class MemberDAO {
 	}
 	
 	//delete 기능 메소드
+	/*
+	 * 	delete
+	 * 	from 테이블명
+	 * 	where 조건
+	 */
 	public int delete(String id) {
 		Connection conn=getConnection();
 		PreparedStatement pstmt=null;

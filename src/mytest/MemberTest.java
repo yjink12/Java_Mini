@@ -37,7 +37,7 @@ public class MemberTest {
 					String name=sc.nextLine();
 					System.out.println("이메일을 입력하세요");
 					String email=sc.nextLine();
-					int result=dao.insert(id, pwd, name, email);	//insert 갯수 0 -> nothing update
+					int result=dao.insert(id, pwd, name, email);	//insert row 0 -> nothing update
 					if(result>=1)
 						System.out.println("추가완료");
 					else
