@@ -1,5 +1,10 @@
 package mydao;
-
+/*
+ * 	insert update delete => PreparedStatement executeUpdate()
+ *  => row -> int(row count) 
+ * 	select => PreparedStatement executeQuery()
+ * 	=> next() : 다음 자료를 가리킴 
+ */
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,7 +20,7 @@ public class MemberDAO {
 	public boolean isCheckId(String id) {
 		//select
 		Connection conn=getConnection();
-		PreparedStatement pstmt=null;
+		PreparedStatement pstmt=null;	//preparedStatement : 미리 컴파일된 SQL문을 나타내는 개체
 		StringBuilder sb=new StringBuilder();
 		sb.append(" select                  ");
 		sb.append("         id              ");
@@ -26,7 +31,7 @@ public class MemberDAO {
 		boolean result=false;
 		try {
 			pstmt=conn.prepareStatement(sb.toString());
-			pstmt.setString(1, id);
+			pstmt.setString(1, id);		//?에 관한 자료들을 외부에서 받아서 사용
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				result=true;
@@ -50,7 +55,7 @@ public class MemberDAO {
 		Connection conn=null;
 		try {
 			Class.forName(className);
-			conn=DriverManager.getConnection(url, user, pwd);
+			conn=DriverManager.getConnection(url, user, pwd);	//DriverManager 연결방식
 		}catch (ClassNotFoundException | SQLException e) {
 			System.out.println(e);
 		}
@@ -67,6 +72,7 @@ public class MemberDAO {
 		StringBuilder sb=new StringBuilder();
 		sb.append(" insert into Member2( mno, id, pwd, name, email, joindate ) ");
 		sb.append(" values	(	memberseq.nextval, ?, ?, ?, ?, sysdate  )   ");
+		//sequence 이용 => 자동으로 순서지정(번호 자동증가)
 		int result=0;
 		
 		try {
@@ -86,6 +92,14 @@ public class MemberDAO {
 	}
 	
 	//update 기능 메소드
+	/*
+	 * 	update 테이블명
+	 * 	set 
+	 * 		컬럼명1=값1 
+	 * 		, 컬럼명2=값2
+	 * 	where 조건
+	 * 
+	 */
 	public int update(String id, String pwd, String email) {
 		Connection conn=getConnection();
 		PreparedStatement pstmt=null;
@@ -157,9 +171,9 @@ public class MemberDAO {
 		try {
 			pstmt=conn.prepareStatement(sb.toString());
 			pstmt.setString(1, id);
-			rs=pstmt.executeQuery();
-			while(rs.next()) {
-				System.out.println("아이디: "+ rs.getString("id"));
+			rs=pstmt.executeQuery();	//select => executeQuery
+			while(rs.next()) {	//다음 자료가 있는지 확인
+				System.out.println("아이디: "+ rs.getString("id"));	//getString(String columnLabel)
 				System.out.println("패스워드: "+ rs.getString("pwd"));
 				System.out.println("이름: "+ rs.getString("name"));
 				System.out.println("이메일: "+ rs.getString("email"));
@@ -196,7 +210,7 @@ public class MemberDAO {
 			pstmt=conn.prepareStatement(sb.toString());
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
-			list.add(new MemberDTO(rs.getInt("mno")
+			list.add(new MemberDTO(rs.getInt("mno")	//
 					, rs.getString("id"), rs.getString("pwd")
 					, rs.getString("name"), rs.getString("email"), rs.getString("joindate")));
 			}
