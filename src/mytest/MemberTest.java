@@ -37,7 +37,7 @@ public class MemberTest {
 					String name=sc.nextLine();
 					System.out.println("이메일을 입력하세요");
 					String email=sc.nextLine();
-					int result=dao.insert(id, pwd, name, email);	//insert row 0 -> nothing update
+					int result=dao.insert(id, pwd, name, email);	//row 0 -> nothing update
 					if(result>=1)
 						System.out.println("추가완료");
 					else
@@ -83,7 +83,13 @@ public class MemberTest {
 				if(!dao.isCheckId(id)) {
 					System.out.println("조회할 아이디가 없습니다");
 				}else {
-					dao.read(id);
+					MemberDTO dto=dao.read(id);
+					System.out.println("mno: "+dto.getMno());
+					System.out.println("id: "+dto.getId());
+					System.out.println("pwd: "+dto.getPwd());
+					System.out.println("name: "+dto.getName());
+					System.out.println("email: "+dto.getEmail());
+					System.out.println("joindate: "+dto.getJoindate());
 				}
 				break;
 					
@@ -99,7 +105,7 @@ public class MemberTest {
 				System.out.println("프로그램을 종료하시겠습니까? y or n");
 				String yn=sc.nextLine();
 				if(yn.contentEquals("y"))
-					System.exit(0);
+					System.exit(0);//jvm 종료 method
 					break;
 			default:
 				break;

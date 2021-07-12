@@ -14,6 +14,10 @@ public class MemberDTO {
 				+ ", joindate=" + joindate + "]";
 	}
 	
+	public MemberDTO() {
+		super();
+	}
+
 	public MemberDTO(int mno, String id, String pwd, String name, String email, String joindate) {
 		super();
 		this.mno = mno;

@@ -30,11 +30,11 @@ public class MemberDAO {
 		ResultSet rs=null;
 		boolean result=false;
 		try {
-			//Connection prepareStatement method => create preparedStatement object
+			//Connection.prepareStatement method => create preparedStatement object
 			pstmt=conn.prepareStatement(sb.toString());//문자열로
 			pstmt.setString(1, id);		//?에 관한 자료들을 외부에서 받아서 사용
 			rs=pstmt.executeQuery();
-			while(rs.next()) {
+			while(rs.next()) {	//현재 커서를 다음으로 이동
 				result=true;
 			}
 		}catch (SQLException e) { 
@@ -159,7 +159,7 @@ public class MemberDAO {
 	}
 	
 	//회원 한 명의 정보보기
-	public void read(String id) {
+	public MemberDTO read(String id) {
 		Connection conn=getConnection();
 		PreparedStatement pstmt=null;
 		StringBuilder sb=new StringBuilder();
@@ -174,22 +174,26 @@ public class MemberDAO {
 		sb.append("   where id=?            ");
 		
 		ResultSet rs=null;
+		MemberDTO dto=null;
 		try {
 			pstmt=conn.prepareStatement(sb.toString());
 			pstmt.setString(1, id);
 			rs=pstmt.executeQuery();	//select => executeQuery
 			while(rs.next()) {	//다음 자료가 있는지 확인
-				System.out.println("아이디: "+ rs.getString("id"));	//getString(String columnLabel)
-				System.out.println("패스워드: "+ rs.getString("pwd"));
-				System.out.println("이름: "+ rs.getString("name"));
-				System.out.println("이메일: "+ rs.getString("email"));
-				System.out.println("가입일자: "+ rs.getDate("joindate"));
+				dto=new MemberDTO();
+				dto.setMno(rs.getInt("mno"));//getString(String columnLabel)
+				dto.setId(rs.getString("id"));
+				dto.setPwd(rs.getString("pwd"));
+				dto.setName(rs.getString("name"));
+				dto.setEmail(rs.getString("email"));
+				dto.setJoindate(rs.getString("joindate"));
 			}
 		}catch (SQLException e) {
 			System.out.println(e);
 		}finally{
 			close(pstmt, conn);
 		}
+		return dto;
 	}
 	//select 기능 메소드
 	//회원 전체의 정보 모두 보기
@@ -215,10 +219,21 @@ public class MemberDAO {
 		try {
 			pstmt=conn.prepareStatement(sb.toString());
 			rs=pstmt.executeQuery();
+			
 			while(rs.next()) {
-			list.add(new MemberDTO(rs.getInt("mno")	//
-					, rs.getString("id"), rs.getString("pwd")
-					, rs.getString("name"), rs.getString("email"), rs.getString("joindate")));
+			//list.add(new MemberDTO(rs.getInt("mno")	//arraylist에 데이터 추가
+					//, rs.getString("id"), rs.getString("pwd")	////getString(String columnLabel)
+					//, rs.getString("name"), rs.getString("email"), rs.getString("joindate")));
+				MemberDTO dto=new MemberDTO();
+				dto.setMno(rs.getInt("mno"));
+				dto.setId(rs.getString("id"));
+				dto.setPwd(rs.getString("pwd"));
+				dto.setName(rs.getString("name"));
+				dto.setEmail(rs.getString("email"));
+				dto.setJoindate(rs.getString("joindate"));
+			
+			list.add(dto);
+			
 			}
 		}catch (SQLException e) {
 			System.out.println(e);
